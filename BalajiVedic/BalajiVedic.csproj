@@ -125,12 +125,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\AccountController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DonationTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\DonorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DonorTypeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PaymentMethodsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PoojaSponsorController.cs" />
+    <Compile Include="Areas\Admin\Controllers\PriestController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ReceiptsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\SalesDetailReportController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Areas\Admin\Models\CaptchaImageResult.cs" />
     <Compile Include="Areas\Admin\Models\SessionClass.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -233,6 +238,17 @@
     <Content Include="Content\Admin\lib\tabs\jquery.tabs.js" />
     <Content Include="Content\Admin\lib\tabs\tabs.css" />
     <Content Include="Content\Admin\lib\tabs\vertical-tab.js" />
+    <Content Include="Content\Admin\PaymentMethods\American Express.png" />
+    <Content Include="Content\Admin\PaymentMethods\Cash.png" />
+    <Content Include="Content\Admin\PaymentMethods\Check.png" />
+    <Content Include="Content\Admin\PaymentMethods\Discover.png" />
+    <Content Include="Content\Admin\PaymentMethods\Gold Items.png" />
+    <Content Include="Content\Admin\PaymentMethods\Master Card.png" />
+    <Content Include="Content\Admin\PaymentMethods\no-image.png" />
+    <Content Include="Content\Admin\PaymentMethods\Other Items.png" />
+    <Content Include="Content\Admin\PaymentMethods\Pay Pal.png" />
+    <Content Include="Content\Admin\PaymentMethods\Silver Items.png" />
+    <Content Include="Content\Admin\PaymentMethods\Visa Card.png" />
     <Content Include="Content\Admin\timepicker\bootstrap-timepicker.css" />
     <Content Include="Content\Admin\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="favicon.ico" />
@@ -265,7 +281,6 @@
     <Content Include="Content\Admin\lib\lightview\example\images\thumbnails\Thumbs.db" />
     <Content Include="Content\Admin\lib\lightview\example\images\Thumbs.db" />
     <Content Include="Content\Admin\lib\lightview\js\excanvas\LICENSE" />
-    <Content Include="Areas\Admin\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Admin\Views\Donors\ReportsDonorList.cshtml" />
     <Content Include="Areas\Admin\Views\Donors\ReportsDonor.cshtml" />
     <Content Include="Scripts\Admin\AdminLTE\app.js" />
@@ -278,6 +293,7 @@
     <Content Include="Scripts\Admin\IE9.js" />
     <Content Include="Scripts\Admin\jquery-1.8.3.js" />
     <Content Include="Scripts\Admin\jquery-ui-1.9.2.custom.min.js" />
+    <Content Include="Scripts\Admin\jquery.min.js" />
     <Content Include="Scripts\Admin\jquery.ui.accordion.js" />
     <Content Include="Scripts\Admin\jquery.ui.widget.js" />
     <Content Include="Scripts\Admin\plugins\datatables\dataTables.bootstrap.js" />
@@ -344,15 +360,12 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -360,6 +373,43 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Areas\Admin\Views\DonationType\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\DonationType\DonationTypeList.cshtml" />
+    <Content Include="Areas\Admin\Views\DonationType\AddDonationType.cshtml" />
+    <Content Include="Areas\Admin\Views\DonationType\EditDonationType.cshtml" />
+    <Content Include="Areas\Admin\Views\Priest\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Priest\PriestList.cshtml" />
+    <Content Include="Areas\Admin\Views\SalesDetailReport\SalesDetailReport.cshtml" />
+    <Content Include="Areas\Admin\Views\SalesDetailReport\SalesDetailReportList.cshtml" />
+    <Content Include="Areas\Admin\Views\SalesDetailReport\SalesSummaryReport.cshtml" />
+    <Content Include="Areas\Admin\Views\SalesDetailReport\SalesSummaryReportList.cshtml" />
+    <Content Include="Areas\Admin\Views\SalesDetailReport\ReportsSalesServices.cshtml" />
+    <Content Include="Areas\Admin\Views\SalesDetailReport\ReportsSalesServicesList.cshtml" />
+    <Content Include="Areas\Admin\Views\PoojaSponsor\PoojaSponsor.cshtml" />
+    <Content Include="Areas\Admin\Views\PoojaSponsor\PoojaSponsorList.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\ReportsDonation.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\ReportsDonationList.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\DonorsList.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\EditDonor.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\DonorDonations.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\DonorDonationsList.cshtml" />
+    <Content Include="Areas\Admin\Views\Receipts\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Receipts\ReceiptsList.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\AddDonor.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\ViewDonor.cshtml" />
+    <Content Include="Areas\Admin\Views\DonationType\PoojaDonations.cshtml" />
+    <Content Include="Areas\Admin\Views\DonationType\PoojaDonationsList.cshtml" />
+    <Content Include="Areas\Admin\Views\PaymentMethods\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\PaymentMethods\PaymentMethodsList.cshtml" />
+    <Content Include="Areas\Admin\Views\Receipts\ViewReceipt.cshtml" />
+    <Content Include="Areas\Admin\Views\Receipts\ReceiptViewList.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\UserList.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\AddUser.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\EditUser.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\HomePageDonors.cshtml" />
+    <Content Include="Areas\Admin\Views\Donors\HomePageDonorsList.cshtml" />
     <None Include="packages.config" />
     <Content Include="Scripts\Admin\plugins\input-mask\phone-codes\phone-be.json" />
     <Content Include="Scripts\Admin\plugins\input-mask\phone-codes\phone-codes.json" />

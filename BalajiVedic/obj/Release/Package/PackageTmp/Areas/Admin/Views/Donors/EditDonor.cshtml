@@ -1,0 +1,220 @@
+﻿@{
+    ViewBag.Title = "EditDonor";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+    BalajiVedic.Entities.Donors objDonors = ViewBag.objDonors;
+
+}
+
+
+<script>
+
+
+    $(document).ready(function () {
+        $("#dDateOfArchana").datepicker({ changeMonth: true, changeYear: true, yearRange: "-50:+50", altFormat: 'dd/mm/yy', dateFormat: "dd/mm/yy" });
+        $("#dDateOfJoin").datepicker({ changeMonth: true, changeYear: true, yearRange: "-50:+50", altFormat: 'dd/mm/yy', dateFormat: "dd/mm/yy" });
+
+        $('#wBookings').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+    });
+
+
+    function Validate() {
+
+        if ($.trim($('#sLastName').val()) == '') { document.getElementsByName('sLastName')[0].placeholder = 'Required'; $('#sLastName').focus().addClass("validate"); return false; } else { $('#sLastName').focus().removeClass("validate"); }
+        if ($.trim($('#sFirstName').val()) == '') { document.getElementsByName('sFirstName')[0].placeholder = 'Required'; $('#sFirstName').focus().addClass("validate"); return false; } else { $('#sFirstName').focus().removeClass("validate"); }
+        if ($.trim($('#sState').val()) == '') { document.getElementsByName('sState')[0].placeholder = 'Required'; $('#sState').focus().addClass("validate"); return false; } else { $('#sState').focus().removeClass("validate"); }
+        if ($.trim($('#sDonorType').val()) == '') { document.getElementsByName('sDonorType')[0].placeholder = 'Required'; $('#sDonorType').focus().addClass("validate"); return false; } else { $('#sDonorType').focus().removeClass("validate"); }
+
+        return true;
+    }
+
+
+</script>
+
+<!-- breadcumb -->
+<div class="content-header">
+    <h1>Edit Donoor </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="@Url.Action("Index", "Donors")"><i class="fa fa-list-alt"></i>Edit Donoor</a></li>
+        <li class="active">Edit Donoor</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+
+<div class="content">
+    @using (Html.BeginForm("DonorsInsert", "Donors", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <input type="hidden" name="iDonorID" id="iDonorID" value="@objDonors.iDonorID" />
+
+        <div class="box validation">
+
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Last Name :  <span class="red-t">*</span></label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sLastName" id="sLastName" name="sLastName" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>First Name : <span class="red-t">*</span></label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sFirstName" id="sFirstName" name="sFirstName" />
+
+                    </div>
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Spouse FirstName : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sSpouseName" id="sSpouseName" name="sSpouseName" />
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Spouse lastName : </label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sSpouseLName" id="sSpouseLName" name="sSpouseLName" />
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Children : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sChildrenInfo" id="sChildrenInfo" name="sChildrenInfo" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Street Name : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sStreetName" id="sStreetName" name="sStreetName" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>City : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sCity" id="sCity" name="sCity" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>State : <span class="red-t">*</span></label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sState" id="sState" name="sState" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>ZipCode : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sZipCode" id="sZipCode" name="sZipCode" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Home Phone : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sHomePhone" id="sHomePhone" name="sHomePhone" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Cell Phone : </label>
+
+                        <input type="text" placeholder="" class="form-control" value=" @objDonors.sCellPhone" id="sCellPhone" name="sCellPhone" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Email : </label>
+
+                        <input type="text" placeholder="" class="form-control" value=" @objDonors.sEmail" id="sEmail" name="sEmail" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+
+
+                        <label class="part-8"><input type="checkbox" @(objDonors.bActive == true ? "checked=checked" : "") id="bActive" class="bActive" name="bActive" value="1" /> <span>Active</span></label>
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Donor Type :  <span class="red-t">*</span></label>
+
+                        <select class="form-control" id="iDonorTypeId" name="iDonorTypeId">
+                            <option value="">- Select -</option>
+                            <option @(objDonors.iDonorTypeID == 1 ? "selected=selected" : "") value="1">General Donor</option>
+
+
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Date Of Join : </label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.dDateOfJoin.ToString("dd/MM/yyyy")" id="dDateOfJoin" name="dDateOfJoin" />
+
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Gothram : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sGothram" id="sGothram" name="sGothram" />
+
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Birth Star : </label>
+
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sBirthStar" id="sBirthStar" name="sBirthStar" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Rasi : </label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sZodiac" id="sZodiac" name="sZodiac" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Date Of Archana : </label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.dDateOfArchana.ToString("dd/MM/yyyy")" id="dDateOfArchana" name="dDateOfArchana" />
+
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Day Of Archana : </label>
+                        <input type="text" placeholder="" class="form-control" value="@objDonors.sDayOfArchana" id="sDayOfArchana" name="sDayOfArchana" />
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body text-right">
+                <input type="submit" value="Submit" class="btn btn-primary" onclick="return Validate();" />
+                <a class="btn btn-info" href="@Url.Action("Index", "Donors")">Cancel</a>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    }
+
+</div>
+
+
+
+

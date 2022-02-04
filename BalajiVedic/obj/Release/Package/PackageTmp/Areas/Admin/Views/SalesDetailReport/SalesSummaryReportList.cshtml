@@ -1,0 +1,153 @@
+﻿
+@{ Layout = null;}
+@{
+
+    BalajiVedic.Entities.SalesSummaryReport objReport = ViewBag.objReport;
+
+
+
+
+
+    List<BalajiVedic.Entities.SalesSummaryReport> lstSalesReport = objReport.lstSalesSummaryReport;
+
+    List<BalajiVedic.Entities.SalesSummaryReport> lstVoidReport = objReport.lstVoidReport;
+
+
+
+
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+
+    FormsAuthenticationTicket authTicket;
+    string userRole = null;
+    if (this.User.Identity.IsAuthenticated && this.User.Identity.Name != null && Context.Session != null)
+    {
+        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        userRole = authTicket.UserData;
+    }
+}
+
+
+
+
+<div class="row-fluid">
+    <div class="span12">
+
+        <table width="100%" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('sPaymentMethod');" class="white-t-u">
+                            Payment Method
+                        </a>
+                    </th>
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('fAmount');" class="white-t-u">
+                            Amount
+                        </a>
+                    </th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (lstSalesReport.Count != 0)
+                {
+                    foreach (var item in lstSalesReport)
+                    {
+                        <tr>
+
+                            <td style="text-align: left">@item.sPaymentMethod</td>
+                            <td style="text-align: left">@item.fAmount</td>
+
+
+                        </tr>
+                    }
+
+                }
+
+                <tr>
+
+                    <td style="text-align: left">Total</td>
+                    <td style="text-align: left">@objReport.TotalAmount </td>
+                  
+
+                </tr>
+                @*else
+                {
+                <tr>
+                    <td class="norecords" colspan="9">No Records Found.</td>
+                </tr>
+                }*@
+</table>
+
+    </div>
+</div>
+
+
+
+<br/><br />
+     <h3>
+         VOIDS
+     </h3>
+
+<div class="row-fluid">
+    <div class="span12">
+
+        <table width="100%" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('sPaymentMethod');" class="white-t-u">
+                            Payment Method
+                        </a>
+                    </th>
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('fAmount');" class="white-t-u">
+                            Amount
+                        </a>
+                    </th>
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (lstVoidReport.Count != 0)
+                {
+                    foreach (var item in lstVoidReport)
+                    {
+                        <tr>
+
+                            <td style="text-align: left">@item.sPaymentMethod</td>
+                            <td style="text-align: left">@item.fAmount</td>
+
+
+                        </tr>
+                    }
+
+                }
+
+                <tr>
+
+                    <td style="text-align: left">Total</td>
+                    <td style="text-align: left">@objReport.TotalVoidAmount </td>
+
+
+                </tr>
+
+                @*else
+                {
+                <tr>
+                    <td class="norecords" colspan="9">No Records Found.</td>
+                </tr>
+                }*@
+</table>
+
+    </div>
+</div>

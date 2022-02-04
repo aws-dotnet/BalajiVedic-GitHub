@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+    var sLastName = ViewBag.sLastName;
+    var sFirstName = ViewBag.sFirstName;
+    var iDonorId = ViewBag.iDonorId;
+    var sPhoneNumber = ViewBag.sPhoneNumber;
+
+    var url = System.Configuration.ConfigurationManager.AppSettings["baseurl"].ToString();
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#Reports').addClass('active');
+        $('#wReportsDonation').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+        $("#StartDate, #EndDate").datepicker({ changeMonth: true, changeYear: true, yearRange: "-50:+50", altFormat: 'dd/mm/yy', dateFormat: "dd/mm/yy" });
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+             DonorsBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+         DonorsBind(1);
+    }
+
+
+
+    function  DonorsBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+      //  var Search = $('#keyword').val().trim();
+        var Search = '';
+
+        var sLastName = $('#sLastName').val();
+        var sFirstName = $('#sFirstName').val();
+        var iDonorId = $('#iDonorId').val();
+        var sPhoneNumber = $('#sPhoneNumber').val();
+
+
+
+        $.ajax({
+            url: '@Url.Action("HomePageDonorsList", "Donors")',
+            type: 'GET',
+            cache: false,
+            data: { sLastName: sLastName, sFirstName: sFirstName, iDonorId: iDonorId, sPhoneNumber:sPhoneNumber,Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items },
+            success: function (result) {
+                $('#divDonations').html(result);
+
+                PagerClickBind();
+            }
+        });
+    }
+
+
+
+
+
+    function ClearSearch() {
+      //  $('#keyword').val('');
+        $('#sLastName').val('');
+        $('#sFirstName').val('');
+        $('#iDonorId').val('');
+        $('#sPhoneNumber').val('');
+
+         DonorsBind(1);
+    }
+
+
+    function ExporttoExcel() {
+        var StartDate = $('#StartDate').val();
+        var EndDate = $('#EndDate').val();
+
+
+       // window.location.href = "Donors/ExportToReportsDonationList?Search=" + $('#keyword').val() + "&StartDate=" + StartDate + "&EndDate=" + EndDate ;
+
+        window.location.href = "Donors/ExportToReportsDonationList?StartDate=" + StartDate + "&EndDate=" + EndDate ;
+
+    }
+
+    @*function urlbind() {
+        var sLastName = $('#sLastName').val();
+        var sFirstName = $('#sFirstName').val();
+        var iDonorId = $('#iDonorId').val();
+        var sPhoneNumber = $('#sPhoneNumber').val();
+
+        url = "http://localhost:6603/DonationType/PoojaDonations?sLastName=" + name;
+        $('#imageurl').attr('href', '@(url)DonationType/PoojaDonations?sLastName=' + sLastName + '&sFirstName=' + sFirstName + '&iDonorId=' + iDonorId + '&sPhoneNumber=' + sPhoneNumber);
+
+
+
+
+    }*@
+
+
+
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="" />
+<input id="hdnsortorder" type="hidden" value="" />
+
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1>Donor Section</h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("Index", " Donors")"><i class="fa fa-money"></i>Donor Section</a></li>
+        <li class="active"><i class="fa fa-money"></i>  Donor Section</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+
+    <div class="box">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="@Url.Action("HomePageDonors", "Donors" )">Donor Section</a></li>
+                <li ><a href="@Url.Action("PoojaDonations", "DonationType" , new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Pooja /Donations</a></li>
+                @*<li><a class="btn" id="imageurl" href="">Pooja /Donations</a></li>*@
+                <li><a class="btn" href="@Url.Action("Index", "PaymentMethods", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Payment Methods</a></li>
+                <li><a class="btn" href="@Url.Action("Index", "MembershipTypes", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Finish</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div class="box">
+        <div class="clearfix box-body">
+            <div class="clearfix row">
+                @*<div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Search</label>
+                        <input type="text" placeholder="Key Word" name="keyword" id="keyword" class="form-control" />
+                    </div>*@
+
+                <div class="col-xs-12 col-lg-2 col-sm-6">
+                    <label>Donor Id</label>
+                    <input type="text" placeholder="Donor Id" name="iDonorId" id="iDonorId" class="form-control" />
+                </div>
+
+                <div class="col-xs-12 col-lg-2 col-sm-6">
+                    <label>Last Name</label>
+                    <input type="text" placeholder="Last Name" name="sLastName" id="sLastName" class="form-control" />
+                </div>
+
+                <div class="col-xs-12 col-lg-2 col-sm-6">
+                    <label>First Name</label>
+                    <input type="text" placeholder="First Name" name="sFirstName" id="sFirstName" class="form-control" />
+                </div>
+
+                <div class="col-xs-12 col-lg-2 col-sm-6">
+                    <label>Phone</label>
+                    <input type="text" placeholder="Phone Number" name="sPhoneNumber" id="sPhoneNumber" class="form-control" />
+                </div>
+
+
+
+
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <div>
+                        <label>&nbsp;</label>
+                    </div>
+                    <button class="btn btn-primary" type="submit" onclick=" DonorsBind(1);">Search</button>
+                    <button class="btn btn-info" type="submit" onclick="ClearSearch();">Clear</button>
+                    <a data-toggle="modal" onclick="ExporttoExcel();" class="btn btn-danger pull-right">Export to Excel</a>
+                    <a data-toggle="modal" href="@Url.Action("AddDonor", "Donors")" class="btn btn-danger pull-right r-m10">Add </a>
+
+                </div>
+            </div>
+        </div>
+        <div id="divDonations" class="box-body table-responsive">
+            @*@{Html.RenderAction("HomePageDonorsList", "Donors");}*@
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+

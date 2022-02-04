@@ -51,10 +51,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common.cs" />
+    <Compile Include="DonationType.cs" />
     <Compile Include="Donors.cs" />
     <Compile Include="DonorType.cs" />
     <Compile Include="Password.cs" />
+    <Compile Include="PaymentMethods.cs" />
+    <Compile Include="PoojaSponsor.cs" />
+    <Compile Include="Priest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receipts.cs" />
+    <Compile Include="SalesDetailReport.cs" />
     <Compile Include="Users.cs" />
   </ItemGroup>
   <ItemGroup>

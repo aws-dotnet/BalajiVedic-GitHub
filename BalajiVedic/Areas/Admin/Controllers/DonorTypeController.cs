@@ -82,11 +82,11 @@ namespace BalajiVedic.Areas.Admin.Controllers
             try
             {
                 Int32 _qstatus = 0;
-                Entities.DonorType _objCountry = _DonorType.GetCountrysById(iDonorTypeID, ref _qstatus);
+                Entities.DonorType _objDonorType = _DonorType.GetDonorTypeListById(iDonorTypeID, ref _qstatus);
 
                 if (_qstatus == 1)
                 {
-                    return Json(new { ok = true, data = _objCountry });
+                    return Json(new { ok = true, data = _objDonorType });
                 }
                 else
                 {

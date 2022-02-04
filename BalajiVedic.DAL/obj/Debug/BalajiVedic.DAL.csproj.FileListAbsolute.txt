@@ -4,3 +4,8 @@ D:\Development\Projects\BalajiVedic\BalajiVedic.DAL\bin\Debug\BalajiVedic.DAL.pd
 D:\Development\Projects\BalajiVedic\BalajiVedic.DAL\obj\Debug\BalajiVedic.DAL.dll
 D:\Development\Projects\BalajiVedic\BalajiVedic.DAL\obj\Debug\BalajiVedic.DAL.pdb
 D:\Development\Projects\BalajiVedic\BalajiVedic.DAL\obj\Debug\BalajiVedic.DAL.csproj.AssemblyReference.cache
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.DAL\bin\Debug\BalajiVedic.DAL.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.DAL\bin\Debug\BalajiVedic.DAL.pdb
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.DAL\obj\Debug\BalajiVedic.DAL.csproj.CoreCompileInputs.cache
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.DAL\obj\Debug\BalajiVedic.DAL.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.DAL\obj\Debug\BalajiVedic.DAL.pdb

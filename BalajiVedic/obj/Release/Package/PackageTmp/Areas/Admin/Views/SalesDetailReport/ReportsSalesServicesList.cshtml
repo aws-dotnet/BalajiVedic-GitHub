@@ -1,0 +1,130 @@
+﻿
+@{ Layout = null;}
+@{
+
+
+    BalajiVedic.Entities.ReportsSalesServices objReport = ViewBag.objReport;
+
+
+   
+
+
+    List<BalajiVedic.Entities.ReportsSalesServices> lstReportsSalesServices = objReport.lstReportsSalesServices;
+
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+
+    FormsAuthenticationTicket authTicket;
+    string userRole = null;
+    if (this.User.Identity.IsAuthenticated && this.User.Identity.Name != null && Context.Session != null)
+    {
+        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        userRole = authTicket.UserData;
+    }
+
+
+    // var  item2=null;
+
+}
+
+
+
+
+<div class="row-fluid">
+    <div class="span12">
+
+        <table width="100%" class="table table-bordered table-hover">
+            <thead>
+                <tr>
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('Service');" class="white-t-u">
+                            Service
+                        </a>
+                    </th>
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('Count');" class="white-t-u">
+                            Count
+                        </a>
+                    </th>
+
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('PriestCommission');" class="white-t-u">
+                            Priest Commission
+                        </a>
+                    </th>
+
+
+
+                    <th width="10%">
+                        <a onclick="javascript:sortresult('Amount');" class="white-t-u">
+                            Amount
+                        </a>
+                    </th>
+
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @if (lstReportsSalesServices != null && lstReportsSalesServices.Count != 0)
+                {
+
+                    foreach (var item in lstReportsSalesServices)
+                    {
+                        <tr>
+
+                            <td style="text-align: left">@item.Service</td>
+                            <td style="text-align: left">@item.Count</td>
+                            <td style="text-align: left">@("$" + item.PriestCommission) </td>
+                            <td style="text-align: left">@("$" + item.Amount)</td>
+
+
+                        </tr>
+
+
+
+
+                    }
+                    <tr>
+
+                        <td style="text-align: left">Total</td>
+                        <td style="text-align: left">@objReport.TotalCount </td>
+                        <td style="text-align: left">@("$" + objReport.TotalPriestCommission) </td>
+                        <td style="text-align: left">@("$" + objReport.TotalAmount)</td>
+
+
+                    </tr>
+
+
+
+
+
+
+                }
+                else
+                {
+                    <tr>
+                        <td class="norecords" colspan="9">No Records Found.</td>
+                    </tr>
+                }
+
+
+        </table>
+
+        <br />  <br />
+
+        @if (lstReportsSalesServices != null && lstReportsSalesServices.Count != 0)
+        {
+            <div id="" style="color:OrangeRed;font-weight:bold; text-align:center">Total: @("$" + objReport.TotalAmount)</div>
+        }
+
+        </div>
+</div>
+
+
+
+

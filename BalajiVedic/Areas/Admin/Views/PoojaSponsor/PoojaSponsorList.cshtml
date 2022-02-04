@@ -1,0 +1,151 @@
+﻿@{ Layout = null;}
+@{
+    string sortcolumn = (string)ViewBag.sortcolumn;
+    string sortorder = (string)ViewBag.sortorder;
+    Int64 Total = (Int64)ViewBag.total;
+    var PageNo = (Int64)ViewBag.pageno;
+    var Items = (Int64)ViewBag.items;
+
+    List<BalajiVedic.Entities.PoojaSponsor> lstPoojaSponsor = ViewBag.lstPoojaSponsor;
+
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+
+    FormsAuthenticationTicket authTicket;
+    string userRole = null;
+    if (this.User.Identity.IsAuthenticated && this.User.Identity.Name != null && Context.Session != null)
+    {
+        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        userRole = authTicket.UserData;
+    }
+}
+
+
+
+
+<div class="row-fluid">
+    <div class="span12">
+        @if (Total == -1)
+        {
+            <div class="norecords">Sorry failed processing your request.</div>
+        }
+        else
+        {
+            <table width="100%" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center">S.No.</th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('ReceiptId');" class="white-t-u">
+                                Receipt Id @if (sortcolumn == "ReceiptId")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('ReceiptDate');" class="white-t-u">
+                                Receipt Date @if (sortcolumn == "ReceiptDate")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+                        <th width="15%">
+                            <a onclick="javascript:sortresult('SponsorDate');" class="white-t-u">
+                                Pooja  Sponsor Date  @if (sortcolumn == "SponsorDate")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('Pooja');" class="white-t-u">
+                                Pooja  @if (sortcolumn == "Pooja")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('LastName');" class="white-t-u">
+                                Last Name @if (sortcolumn == "LastName")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('FirstName');" class="white-t-u">
+                                First Name @if (sortcolumn == "FirstName")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('HomePhone');" class="white-t-u">
+                                Home Phone @if (sortcolumn == "HomePhone")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('Email');" class="white-t-u">
+                                Email @if (sortcolumn == "Email")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (lstPoojaSponsor.Count != 0)
+                    {
+                        foreach (var item in lstPoojaSponsor)
+                        {
+                    <tr>
+                        <td style="text-align:center">@item.RId</td>
+
+                        <td style="text-align: left">@item.ReceiptId</td>
+                        <td style="text-align: left">
+                            @item.ReceiptDate.ToString("dd/MM/yyyy")
+                            <br />
+                            @item.ReceiptDate.ToString("hh:mm tt")
+                        </td>
+                        <td style="text-align: left">
+                            @item.SponsorDate.ToString("dd/MM/yyyy")
+                            <br />
+                            @item.SponsorDate.ToString("hh:mm tt")
+                        </td>
+                        <td style="text-align: left">@item.Pooja</td>
+                        <td style="text-align: left">@item.LastName</td>
+                        <td style="text-align: left">@item.FirstName</td>
+                        <td style="text-align: left">
+                            @item.HomePhone
+
+                        </td>
+
+                        <td style="text-align: left">
+                            @item.Email
+
+                        </td>
+
+                    </tr>
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="norecords" colspan="9">No Records Found.</td>
+                        </tr>
+                    }
+            </table>
+        }
+    </div>
+</div>
+
+@Html.Raw(BalajiVedic.BLL.Common.SetPaging((Int64)ViewBag.items, ref Total, (Int64)ViewBag.pageno, "pagination pagination-centered"))
+
+

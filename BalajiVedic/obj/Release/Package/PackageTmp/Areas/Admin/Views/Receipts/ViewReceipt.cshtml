@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+    BalajiVedic.Entities.Receipts objReceiptviews = ViewBag.objReceiptviews;
+   
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#Reports').addClass('active');
+        $('#wReportsDonation').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+        $("#dReceiptDate, #EndDate").datepicker({ changeMonth: true, changeYear: true, yearRange: "-50:+50", altFormat: 'dd/mm/yy', dateFormat: "dd/mm/yy" });
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+             ReceiptViewBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+         ReceiptViewBind(1);
+    }
+
+
+
+    function  ReceiptViewBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+      //  var Search = $('#keyword').val().trim();
+        var Search = '';
+        var iReceiptId = '@objReceiptviews.iReceiptId';
+
+
+        $.ajax({
+            url: '@Url.Action("ReceiptViewList", "Receipts")',
+            type: 'GET',
+            cache: false,
+            data: { iReceiptId:iReceiptId,Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items},
+            success: function (result) {
+                $('#divReceipts').html(result);
+                PagerClickBind();
+            }
+        });
+    }
+
+
+
+    function ClearSearch() {
+       
+         ReceiptViewBind(1);
+    }
+
+
+
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="" />
+<input id="hdnsortorder" type="hidden" value="" />
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1>View Receipts</h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("Index", " Receipts")"><i class="fa fa-money"></i> View Receipts</a></li>
+        <li class="active"><i class="fa fa-money"></i>  View Receipts</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+    <div class="box">
+        <div class="clearfix box-body">
+            <div class="clearfix row">
+
+
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Receipt # :  </label>
+                    @objReceiptviews.iReceiptId
+                </div>
+
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Date : </label>
+                    @objReceiptviews.dReceiptDate.ToString("dd/MM/yyyy hh:mm tt")
+                </div>
+                
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Donor :  </label>
+                    @objReceiptviews.sName
+                </div>
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Payment :  </label>
+                    @objReceiptviews.sPaymentMethod
+                </div>
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Check :  </label>
+                    @objReceiptviews.sPaymentInfo
+                </div>
+
+
+            </div>
+        </div>
+        <div id="divReceipts" class="box-body table-responsive">
+            @{Html.RenderAction("ReceiptViewList", "Receipts");}
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+

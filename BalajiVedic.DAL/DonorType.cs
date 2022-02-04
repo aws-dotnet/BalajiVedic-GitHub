@@ -72,6 +72,8 @@ namespace BalajiVedic.DAL
             return dt;
         }
 
+       
+
         public DataTable GetDonorTypeList(ref int status)
         {
             DataTable dt = null;
@@ -103,7 +105,7 @@ namespace BalajiVedic.DAL
                     new SqlParameter("@QStatus",0)
                 };
                 _sqlP[1].Direction = System.Data.ParameterDirection.Output;
-                dt = _dbAccess.GetDataTable("DonorTypeSelect", ref _sqlP);
+                dt = _dbAccess.GetDataTable("DonorTypeGetById", ref _sqlP);
                 status = Convert.ToInt32(_sqlP[1].Value);
             }
             catch (Exception ex)

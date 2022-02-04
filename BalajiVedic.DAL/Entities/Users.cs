@@ -20,6 +20,8 @@ namespace BalajiVedic.Entities
         public string sEmail { get; set; }
         public bool iFailedLogins { get; set; }
         public bool bLockOut { get; set; }
+
+        public string sRole { get; set; }
         public bool bForcePasswordChange { get; set; }
         public string sCreateUser { get; set; }
         public DateTime dCreateDate { get; set; }

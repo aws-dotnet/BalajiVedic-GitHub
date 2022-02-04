@@ -61,10 +61,10 @@ namespace BalajiVedic.BLL
         }
 
 
-        public List<Entities.Users> GetUsersListByVariable(string Search, string Sort, int PageNo, int Items, ref int Total)
+        public List<Entities.Users> GetUsersListByVariable_bkp(string Search, string Sort, int PageNo, int Items, ref int Total)
         {
             List<Entities.Users> lstUsers = new List<Entities.Users>();
-            DataTable dt = _Users.GetUsersListByVariable(Search, Sort, PageNo, Items, ref Total);
+            DataTable dt = _Users.GetUsersListByVariable_bkp(Search, Sort, PageNo, Items, ref Total);
             if (dt.Rows.Count != 0)
             {
                 foreach (DataRow dr in dt.Rows)
@@ -89,6 +89,42 @@ namespace BalajiVedic.BLL
                     objlstUsers.dLastUpdateDate = (dr["dLastUpdateDate"] != DBNull.Value ? Convert.ToDateTime(dr["dLastUpdateDate"]) : DateTime.MinValue);
                     objlstUsers.RoleName = (dr["RoleName"] != DBNull.Value ? dr["RoleName"].ToString() : "");
 
+
+
+                    lstUsers.Add(objlstUsers);
+                }
+            }
+            return lstUsers;
+        }
+
+        public List<Entities.Users> GetUsersListByVariable(string sUserID, string Name, Int64 iRoleID, string Search, string Sort, int PageNo, int Items, ref int Total)
+        {
+            List<Entities.Users> lstUsers = new List<Entities.Users>();
+            DataTable dt = _Users.GetUsersListByVariable(sUserID, Name, iRoleID,Search, Sort, PageNo, Items, ref Total);
+            if (dt.Rows.Count != 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    Entities.Users objlstUsers = new Entities.Users();
+
+                    objlstUsers.RId = Convert.ToInt32(dr["RId"].ToString());
+                    objlstUsers.iUserID = Convert.ToInt32(dr["iUserID"].ToString());
+                    objlstUsers.sUserID = (dr["sUserID"] != DBNull.Value ? dr["sUserID"].ToString() : "");
+                    objlstUsers.sFirstName = (dr["sFirstName"] != DBNull.Value ? dr["sFirstName"].ToString() : "");
+                    objlstUsers.sLastName = (dr["sLastName"] != DBNull.Value ? dr["sLastName"].ToString() : "");
+                    objlstUsers.sPassword = (dr["sPassword"] != DBNull.Value ? dr["sPassword"].ToString() : "");
+                    objlstUsers.iRoleID = (dr["iRoleID"] != DBNull.Value ? Convert.ToInt64(dr["iRoleID"]) : 0);
+                    objlstUsers.sRole = (dr["sRole"] != DBNull.Value ? dr["sRole"].ToString() : "");
+                    objlstUsers.bLockOut = (dr["bLockOut"] != DBNull.Value ? Convert.ToBoolean(dr["bLockOut"]) : false);
+                    objlstUsers.bForcePasswordChange = (dr["bForcePasswordChange"] != DBNull.Value ? Convert.ToBoolean(dr["bForcePasswordChange"]) : false);
+                    objlstUsers.bActive = (dr["bActive"] != DBNull.Value ? Convert.ToBoolean(dr["bActive"]) : false);
+                    objlstUsers.sCreateUser = (dr["sCreateUser"] != DBNull.Value ? dr["sCreateUser"].ToString() : "");
+                    objlstUsers.dCreateDate = (dr["dCreateDate"] != DBNull.Value ? Convert.ToDateTime(dr["dCreateDate"]) : DateTime.MinValue);
+                    objlstUsers.sLastUpdateUser = (dr["sLastUpdateUser"] != DBNull.Value ? dr["sLastUpdateUser"].ToString() : "");
+                    objlstUsers.dLastUpdateDate = (dr["dLastUpdateDate"] != DBNull.Value ? Convert.ToDateTime(dr["dLastUpdateDate"]) : DateTime.MinValue);
+                    objlstUsers.RoleName = (dr["RoleName"] != DBNull.Value ? dr["RoleName"].ToString() : "");
+
+               
 
 
                     lstUsers.Add(objlstUsers);

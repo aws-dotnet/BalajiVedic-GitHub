@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "ViewDonor";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+    BalajiVedic.Entities.Donors objDonors = ViewBag.objDonors;
+
+}
+
+
+
+
+<!-- breadcumb -->
+<div class="content-header">
+    <h1>View Donoor </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="@Url.Action("Index", "Donors")"><i class="fa fa-list-alt"></i>View Donoor</a></li>
+        <li class="active">View Donoor</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+
+<div class="content">
+  
+        <div class="box validation">
+
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Last Name :  <span class="red-t">*</span></label>
+                        @objDonors.sLastName
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>First Name : <span class="red-t">*</span></label>
+                        @objDonors.sFirstName
+                    </div>
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Spouse FirstName : </label>
+                        @objDonors.sSpouseName
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Spouse lastName : </label>
+                        @objDonors.sSpouseLName
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Children : </label>
+
+                        @objDonors.sChildrenInfo
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Street Name : </label>
+                        @objDonors.sStreetName
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>City : </label>
+
+                        @objDonors.sCity
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>State : <span class="red-t">*</span></label>
+
+                        @objDonors.sState
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>ZipCode : </label>
+
+                        @objDonors.sZipCode
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Home Phone : </label>
+
+                        @objDonors.sHomePhone
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Cell Phone : </label>
+
+                        @objDonors.sCellPhone
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Email : </label>
+
+                        @objDonors.sEmail
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+
+
+                        <label class="part-8">@(objDonors.bActive == true ? "checked=checked" : "") <span>Active</span></label>
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Donor Type :  <span class="red-t">*</span></label>
+                        objDonors.iDonorTypeID
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Date Of Join : </label>
+                        @objDonors.dDateOfJoin.ToString("dd/MM/yyyy")
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Gothram : </label>
+
+                        @objDonors.sGothram
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Birth Star : </label>
+
+                        @objDonors.sBirthStar
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Rasi : </label>
+                        @objDonors.sZodiac
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Date Of Archana : </label>
+                        @objDonors.dDateOfArchana.ToString("dd/MM/yyyy")
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Day Of Archana : </label>
+                        @objDonors.sDayOfArchana
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body text-right">
+                
+                <a class="btn btn-info" href="@Url.Action("Index", "Donors")">Cancel</a>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    
+
+</div>
+
+
+
+
+

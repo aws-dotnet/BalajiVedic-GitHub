@@ -1,0 +1,159 @@
+﻿@{ Layout = null;}
+@{
+    string sortcolumn = (string)ViewBag.sortcolumn;
+    string sortorder = (string)ViewBag.sortorder;
+    Int64 Total = (Int64)ViewBag.total;
+    var PageNo = (Int64)ViewBag.pageno;
+    var Items = (Int64)ViewBag.items;
+
+    List<BalajiVedic.Entities.DonationType> lstDonationType = ViewBag.lstDonationType;
+
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+
+    FormsAuthenticationTicket authTicket;
+    string userRole = null;
+    if (this.User.Identity.IsAuthenticated && this.User.Identity.Name != null && Context.Session != null)
+    {
+        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        userRole = authTicket.UserData;
+    }
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+    });
+
+
+
+    function UpdateNotes(iDonationTypeID, RId) {
+
+                var objDonationType = {};
+                 objDonationType.iDonationTypeID = iDonationTypeID;
+
+
+                objDonationType.sNotes = $("#sNotes" + RId).val();
+
+     
+                $.ajax({
+                    url: '@Url.Action("DonationTypeNotesUpdate", "DonationType")',
+                    type: 'POST',
+                    data: JSON.stringify(objDonationType),
+                    datatype: "JSON",
+                    contentType: 'application/json',
+                    success: function (result) {
+                        if (result.ok) {
+                            $("#divmessage").html(result.data);
+                            $('.closable').append("<a class=\"dis-in\" onclick=\"this.parentElement.style.display='none';\" ><i class=\"closelink\">&nbsp;</i></a>");
+
+                         //   window.location.href = '@Url.Action("EducationOccupationProfile", "Members")';
+                        }
+                        else {
+                            $("#divmessage").html(result.data);
+                            $('.closable').append("<a class=\"dis-in\" onclick=\"this.parentElement.style.display='none';\" ><i class=\"closelink\">&nbsp;</i></a>");
+                        }
+                    }
+                });
+
+
+        }
+</script>
+
+
+
+<div class="row-fluid">
+    <div class="span12">
+        @if (Total == -1)
+        {
+            <div class="norecords">Sorry failed processing your request.</div>
+        }
+        else
+        {
+
+            <table width="100%" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center">S.No.</th>
+
+                        <th width="20%">
+                            <a onclick="javascript:sortresult('sDonationTypeDesc');" class="white-t-u">
+                                Pooja/Donation  @if (sortcolumn == "sDonationTypeDesc")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('fPrice');" class="white-t-u">
+                                Price @if (sortcolumn == "fPrice")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+                        <th width="30%">
+                            <a onclick="javascript:sortresult('sNotes');" class="white-t-u">
+                                Notes   @if (sortcolumn == "sNotes")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+
+                        <th width="5%">
+                            <a onclick="javascript:sortresult('fPrice');" class="white-t-u">
+                                Select 
+                            </a>
+                        </th>
+
+                     
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (lstDonationType.Count != 0)
+                    {
+                        foreach (var item in lstDonationType)
+                        {
+                           
+                    <tr>
+                        <td style="text-align:center">@item.RId</td>
+
+                        <td style="text-align: left">@item.sDonationTypeDesc</td>
+                        <td style="text-align: left">@("$" + item.fPrice)</td>
+
+                        <td style="text-align: left">
+
+                            <input type="text" name="@("sNotes" + @item.RId)" id="@("sNotes" + @item.RId)" value="@item.sNotes" class="form-control" />
+
+                            
+                        </td>
+
+
+                        <td>
+                            <a title="" class="sepV_a" onclick="UpdateNotes(@item.iDonationTypeID,@item.RId);">Select</a>
+                        </td>
+
+                    </tr>
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="norecords" colspan="9">No Records Found.</td>
+                        </tr>
+                    }
+            </table>
+        }
+    </div>
+</div>
+
+@Html.Raw(BalajiVedic.BLL.Common.SetPaging((Int64)ViewBag.items, ref Total, (Int64)ViewBag.pageno, "pagination pagination-centered"))
+
+
+
+
+

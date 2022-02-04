@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "AddManageUser";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+
+}
+
+
+<script>
+
+
+    $(document).ready(function () {
+     
+        $('#wBookings').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+    });
+
+
+    function Validate() {
+
+        if ($.trim($('#sUserID').val()) == '') { document.getElementsByName('sUserID')[0].placeholder = 'Required'; $('#sUserID').focus().addClass("validate"); return false; } else { $('#sUserID').focus().removeClass("validate"); }
+        if ($.trim($('#sFirstName').val()) == '') { document.getElementsByName('sFirstName')[0].placeholder = 'Required'; $('#sFirstName').focus().addClass("validate"); return false; } else { $('#sFirstName').focus().removeClass("validate"); }
+        if ($.trim($('#sLastName').val()) == '') { document.getElementsByName('sLastName')[0].placeholder = 'Required'; $('#sStsLastNameate').focus().addClass("validate"); return false; } else { $('#sLastName').focus().removeClass("validate"); }
+     
+        return true;
+    }
+
+
+</script>
+
+<!-- breadcumb -->
+<div class="content-header">
+    <h1>Add Manage User </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="@Url.Action("Index", "Users")"><i class="fa fa-list-alt"></i>Add Manage User</a></li>
+        <li class="active">Add Manage User</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+
+<div class="content">
+    @using (Html.BeginForm("CreateUser", "Users", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+
+        <div class="box validation">
+
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>User Id :  <span class="red-t">*</span></label>
+                        <input type="text" placeholder="" class="form-control" id="sUserID" name="sUserID" />
+
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>First Name : <span class="red-t">*</span></label>
+                        <input type="text" placeholder="" class="form-control" id="sFirstName" name="sFirstName" />
+
+                    </div>
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Last Name : <span class="red-t">*</span></label>
+
+                        <input type="text" placeholder="" class="form-control" id="sLastName" name="sLastName" />
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Role :  </label>
+
+                        <select class="form-control" id="iRoleID" name="iRoleID">
+                            <option value="">- Select -</option>
+                            <option value="1">SystemAdmin</option>
+                            <option value="2">Volunteer</option>
+                        </select>
+                    </div>
+
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Email : </label>
+                        <input type="text" placeholder="" class="form-control" id="sEmail" name="sEmail" />
+                    </div>
+
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Force Password Change :  </label>
+
+                        <select class="form-control" id="bForcePasswordChange" name="bForcePasswordChange">
+                            <option value="">- Select -</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Lock Out :  </label>
+
+                        <select class="form-control" id="bLockOut" name="bLockOut">
+                            <option value="">- Select -</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label class="b-m0">&nbsp;</label><br />
+                        <label class="part-8"><input type="checkbox" id="bActive" class="bActive" name="bActive" value="true" /> <span>Active</span></label>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body text-right">
+                <input type="submit" value="Submit" class="btn btn-primary" onclick="return Validate();" />
+                <a class="btn btn-info" href="@Url.Action("Index", "Users")">Cancel</a>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    }
+
+</div>
+
+
+
+
+

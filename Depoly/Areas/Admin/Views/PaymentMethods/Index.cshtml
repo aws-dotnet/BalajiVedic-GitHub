@@ -1,0 +1,120 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+    var sLastName = ViewBag.sLastName;
+    var sFirstName = ViewBag.sFirstName;
+    var iDonorId = ViewBag.iDonorId;
+    var sPhoneNumber = ViewBag.sPhoneNumber;
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#WebPages').addClass('active');
+        $('#wDonationType').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+            PaymentMethodsBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+        PaymentMethodsBind(1);
+    }
+
+
+
+
+    function PaymentMethodsBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+        var Search = $('#keyword').val().trim();
+       
+        $.ajax({
+            url: '@Url.Action("PaymentMethodsList", "PaymentMethods")',
+            type: 'GET',
+            cache: false,
+            data: {Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items },
+            success: function (result) {
+                $('#divDonorType').html(result);
+                PagerClickBind();
+            }
+        });
+    }
+
+
+
+
+
+  
+
+    function ClearSearch() {
+
+       
+        $('#keyword').val('');
+        PaymentMethodsBind(1);
+    }
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="" />
+<input id="hdnsortorder" type="hidden" value="" />
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1>Paymennt Methods  <span class="" style="padding-left:270px;">Donor :<span class="red-t">@sLastName @sFirstName</span></span></h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("Index", "PaymentMethods")"><i class="fa fa-money"></i> Paymennt Methods</a></li>
+        <li class="active"><i class="fa fa-money"></i> Paymennt Methods</li>
+    </ol>
+</div>
+
+
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+
+    <div class="box">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li><a href="@Url.Action("HomePageDonors", "Donors" )">Donor Section</a></li>
+                <li ><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Pooja /Donations</a></li>
+                <li class="active"><a class="btn" href="@Url.Action("Index", "PaymentMethods", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Payment Methods</a></li>
+                <li><a class="btn" href="@Url.Action("Index", "MembershipTypes", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Finish</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div id="divDonorType" class="box-body table-responsive">
+        @{Html.RenderAction("PaymentMethodsList", "PaymentMethods");}
+    </div>
+
+
+
+</div>
+
+
+

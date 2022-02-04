@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#Reports').addClass('active');
+        $('#wSalesDetailReport').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+        $("#StartDate, #EndDate").datepicker({ changeMonth: true, changeYear: true, yearRange: "-50:+50", altFormat: 'dd/mm/yy', dateFormat: "dd/mm/yy" });
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+             SalesDetailReportBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+         SalesDetailReportBind(1);
+    }
+
+
+
+    function  SalesDetailReportBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+       // var Search = $('#keyword').val().trim();
+        var Search ='';
+        var StartDate = $('#StartDate').val();
+        var EndDate = $('#EndDate').val();
+
+        $.ajax({
+            url: '@Url.Action("SalesDetailReportList", "SalesDetailReport")',
+            type: 'GET',
+            cache: false,
+            data: { Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items,StartDate: StartDate, EndDate: EndDate },
+            success: function (result) {
+                $('#divSalesDetailReport').html(result);
+                PagerClickBind();
+            }
+        });
+    }
+
+
+    function ClearSearch() {
+        $('#keyword').val('');
+        $('#StartDate').val('');
+        $('#EndDate').val('');
+        
+         SalesDetailReportBind(1);
+    }
+
+
+    function ExporttoExcel() {
+        var StartDate = $('#StartDate').val();
+        var EndDate = $('#EndDate').val();
+      
+
+        window.location.href = "SalesDetailReport/ExportToReportsSalesDetail?StartDate=" + StartDate + "&EndDate=" + EndDate ;
+    }
+
+
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="" />
+<input id="hdnsortorder" type="hidden" value="" />
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1>Sales Detail Report</h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("Index", " SalesDetailReport")"><i class="fa fa-money"></i> Sales Detail Report</a></li>
+        <li class="active"><i class="fa fa-money"></i>  Sales Detail Report</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+    <div class="box">
+        <div class="clearfix box-body">
+            <div class="clearfix row">
+                @*<div class="col-xs-12 col-lg-3 col-sm-6">
+                    <label>Search</label>
+                    <input type="text" placeholder="Key Word" name="keyword" id="keyword" class="form-control" />
+                </div>*@
+
+             
+
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Date Range</label>
+                    <div class="clearfix row">
+                        <div class="col-xs-12 col-lg-6 col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input type="text" id="StartDate" name="StartDate" placeholder="From" class="form-control date" />
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-lg-6 col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                <input type="text" id="EndDate" name="EndDate" placeholder="To" class="form-control date" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-lg-8 col-sm-6">
+                    <div>
+                        <label>&nbsp;</label>
+                    </div>
+                    <button class="btn btn-primary" type="submit" onclick=" SalesDetailReportBind(1);">Search</button>
+                    <button class="btn btn-info" type="submit" onclick="ClearSearch();">Clear</button>
+                    <a data-toggle="modal" onclick="ExporttoExcel();" class="btn btn-danger pull-right">Export to Excel</a>
+                </div>
+            </div>
+        </div>
+        <div id="divSalesDetailReport" class="box-body table-responsive">
+            @*@{Html.RenderAction("SalesDetailReportList", "SalesDetailReport");}*@
+        </div>
+
+
+    </div>
+</div>
+
+
+
+

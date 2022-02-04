@@ -16,6 +16,10 @@ namespace BalajiVedic.Entities
         public DateTime dCreateDate { get; set; }
         public string sLastUpdateUser { get; set; }
         public DateTime dLastUpdateDate { get; set; }
-      
+
+
+
+        
+
     }
 }

@@ -53,7 +53,7 @@ namespace BalajiVedic.DAL
             return _status;
         }
 
-        public DataTable GetUsersListByVariable(string Search, string Sort, int PageNo, int Items, ref int Total)
+        public DataTable GetUsersListByVariable_bkp(string Search, string Sort, int PageNo, int Items, ref int Total)
         {
             DataTable dt = null;
             try
@@ -66,6 +66,39 @@ namespace BalajiVedic.DAL
                     new SqlParameter("@PageNo",PageNo),
                     new SqlParameter("@Items",Items),
                     new SqlParameter("@Total",Total)
+                };
+
+                _sqlP[4].Direction = System.Data.ParameterDirection.Output;
+                dt = _dbAccess.GetDataTable("UserGetListByVariable_bkp", ref _sqlP);
+                Total = Convert.ToInt32(_sqlP[4].Value);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return dt;
+        }
+
+
+
+        public DataTable GetUsersListByVariable(string sUserID,string Name,Int64 iRoleID,string Search, string Sort, int PageNo, int Items, ref int Total)
+        {
+            DataTable dt = null;
+            try
+            {
+                _sqlP = new[]
+                {
+
+                    new SqlParameter("@Search",Search),
+                    new SqlParameter("@Sort",Sort),
+                    new SqlParameter("@PageNo",PageNo),
+                    new SqlParameter("@Items",Items),
+                    new SqlParameter("@Total",Total),
+                    new SqlParameter("@sUserID",sUserID),
+                    new SqlParameter("@Name",Name),
+                    new SqlParameter("@iRoleID",iRoleID),
+
+        
                 };
 
                 _sqlP[4].Direction = System.Data.ParameterDirection.Output;

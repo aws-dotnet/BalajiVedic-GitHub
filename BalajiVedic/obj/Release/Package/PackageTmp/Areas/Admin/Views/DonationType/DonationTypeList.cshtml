@@ -1,0 +1,202 @@
+﻿@{ Layout = null;}
+@{
+    string sortcolumn = (string)ViewBag.sortcolumn;
+    string sortorder = (string)ViewBag.sortorder;
+    Int64 Total = (Int64)ViewBag.total;
+    var PageNo = (Int64)ViewBag.pageno;
+    var Items = (Int64)ViewBag.items;
+
+    List<BalajiVedic.Entities.DonationType> lstDonationType = ViewBag.lstDonationType;
+
+    HttpCookie authCookie = HttpContext.Current.Request.Cookies["UserCookie"];
+
+    FormsAuthenticationTicket authTicket;
+    string userRole = null;
+    if (this.User.Identity.IsAuthenticated && this.User.Identity.Name != null && Context.Session != null)
+    {
+        authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+
+        userRole = authTicket.UserData;
+    }
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+    });
+
+    function DonorTypeStatus(iDonationTypeID) {
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UpdateDonationTypeStatus", "DonationType")', // the URL of the controller action method
+            data: { iDonationTypeID: iDonationTypeID }, // optional data
+            datatype: "JSON",
+            success: function (result) {
+                if (result.ok) {
+                    $('#divmessage').html(result.data);
+                    $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+                    $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+
+                    DonationTypeBind(1);
+                }
+                else {
+                    $('#divmessage').html(result.data);
+                    $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+                }
+            }
+        });
+    }
+</script>
+
+
+
+<div class="row-fluid">
+    <div class="span12">
+        @if (Total == -1)
+        {
+            <div class="norecords">Sorry failed processing your request.</div>
+        }
+        else
+        {
+
+            <table width="100%" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th width="5%" style="text-align:center">S.No.</th>
+
+                        <th width="8%">
+                            <a onclick="javascript:sortresult('sDonationType');" class="white-t-u">
+                                Type  @if (sortcolumn == "sDonationType")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('sPoojaFrequency');" class="white-t-u">
+                                Pooja Category @if (sortcolumn == "sPoojaFrequency")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+                        <th width="17%">
+                            <a onclick="javascript:sortresult('sDonationTypeDesc');" class="white-t-u">
+                                Description   @if (sortcolumn == "sDonationTypeDesc")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+
+                        <th width="7%">
+                            <a onclick="javascript:sortresult('fPrice');" class="white-t-u">
+                                Price  @if (sortcolumn == "fPrice")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('sDonorType');" class="white-t-u">
+                                Commission Type @if (sortcolumn == "sDonorType")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+
+
+                        <th width="11%">
+                            <a onclick="javascript:sortresult('sStreetName');" class="white-t-u">
+                                Priest
+                                Commission @if (sortcolumn == "sStreetName")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="10%">
+                            <a onclick="javascript:sortresult('dDateOfJoin');" class="white-t-u">
+                                Tax
+                                Deductible @if (sortcolumn == "dDateOfJoin")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                            </a>
+                        </th>
+
+                        <th width="7%">
+                            <a onclick="javascript:sortresult('IsActive');" class="white-t-u">
+                                IsActive @if (sortcolumn == "IsActive")
+                                {<img alt="@(sortorder)" title="@(sortorder)" src="Content/Admin/images/sort_@(sortorder).gif" />}
+                        </th>
+
+                        <th width="10%">Action</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (lstDonationType.Count != 0)
+                    {
+                        foreach (var item in lstDonationType)
+                        {
+                            <tr>
+                                <td style="text-align:center">@item.RId</td>
+
+                                <td style="text-align: left">@item.sDonationType</td>
+                                <td style="text-align: left">@item.sPoojaFrequency</td>
+                                <td style="text-align: left">@item.sDonationTypeDesc</td>
+                                <td style="text-align: left">@("$" + item.fPrice)</td>
+                                <td style="text-align: left">@item.CommissionType</td>
+                                <td style="text-align: left">@item.fPriestCommision</td>
+                                <td style="text-align: left">@item.bTaxDeductible</td>
+                                <td>
+                                    @{
+                                        var isactive = "";
+                                        var active = "";
+                                        var disable = "";
+                                        if (item.bActive == true)
+                                        {
+                                            isactive = "Active";
+                                            disable = "style=\"cursor: pointer;\" onclick=\"javascript:DonorTypeStatus(" + item.iDonationTypeID + ");\"";
+                                        }
+                                        else
+                                        {
+                                            isactive = "Disable";
+                                            active = "style=\"cursor: pointer;\" onclick=\"javascript:DonorTypeStatus(" + item.iDonationTypeID + ");\"";
+                                        }
+                                        <div class="admin-active">
+                                            @isactive
+                                            <ul>
+                                                <li><a @Html.Raw(active)>Active</a></li>
+                                                <li><a @Html.Raw(disable)>Disable</a></li>
+                                            </ul>
+                                        </div>
+                                    }
+                                </td>
+
+                                <td>
+                                    <a title="Edit" class="sepV_a" href="@Url.Action("EditDonationType", "DonationType", new { iDonationTypeID = item.iDonationTypeID })"><i class="fa fa-pencil-square-o"></i></a>
+
+                                    <a class="themedelete" onclick="javascript:Delete(@item.iDonationTypeID);" id="12" title="Delete"><i class="fa fa-trash-o"></i></a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td class="norecords" colspan="9">No Records Found.</td>
+                        </tr>
+                    }
+            </table>
+        }
+    </div>
+</div>
+
+@Html.Raw(BalajiVedic.BLL.Common.SetPaging((Int64)ViewBag.items, ref Total, (Int64)ViewBag.pageno, "pagination pagination-centered"))
+
+
+
+

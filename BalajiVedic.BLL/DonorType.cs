@@ -31,10 +31,10 @@ namespace BalajiVedic.BLL
             return _status;
         }
 
-        public Int64 UpdateDonorTypeStatus(Int64 iUserID)
+        public Int64 UpdateDonorTypeStatus(Int64 iDonorTypeID)
         {
             Int64 _status = 0;
-            _status = _DonorType.UpdateDonorTypeStatus(iUserID);
+            _status = _DonorType.UpdateDonorTypeStatus(iDonorTypeID);
             return _status;
         }
 
@@ -64,6 +64,8 @@ namespace BalajiVedic.BLL
             return lstDonorType;
         }
 
+
+     
         public List<Entities.DonorType> GetDonorTypeList(ref int status)
         {
             List<Entities.DonorType> lstDonorType = new List<Entities.DonorType>();
@@ -90,7 +92,7 @@ namespace BalajiVedic.BLL
             return lstDonorType;
         }
 
-        public Entities.DonorType GetCountrysById(Int64 iDonorTypeID, ref int status)
+        public Entities.DonorType GetDonorTypeListById(Int64 iDonorTypeID, ref int status)
         {
             Entities.DonorType objDonorType = new Entities.DonorType();
             DataTable dt = new DataTable();

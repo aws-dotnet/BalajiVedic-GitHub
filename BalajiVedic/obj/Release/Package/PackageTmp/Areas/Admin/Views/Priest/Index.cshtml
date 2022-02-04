@@ -1,0 +1,207 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#WebPages').addClass('active');
+        $('#wPriest').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+            PriestBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+        PriestBind(1);
+    }
+
+    function Add() {
+        clearDonorType();
+        $('#AddDonor-Category').modal('show');
+        $('#lbltitle').html('Add Manage Priests');
+    }
+
+    function clearDonorType() {
+        $('#iPriestId').val('');
+        $('#sPriestName').val('');
+        $('#spansDonorType').html('');
+        $("#AddDonorType").dialog("close");
+        $('#sPriestName').focus().removeClass("validate");
+    }
+
+
+    function PriestBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+        var Search = $('#keyword').val().trim();
+
+        $.ajax({
+            url: '@Url.Action("PriestList", "Priest")',
+            type: 'GET',
+            cache: false,
+            data: { Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items },
+            success: function (result) {
+                $('#divDonorType').html(result);
+                PagerClickBind();
+            }
+        });
+    }
+    
+
+    function EditPriest(iPriestId) {
+        $.ajax({
+            url: '@Url.Action("EditPriest", "Priest")',
+            type: 'POST',
+            data: { iPriestId: iPriestId },
+            datatype: "JSON",
+            success: function (result) {
+                if (result.ok) {
+                    var objDonorType = result.data;
+                    $('#iPriestId').val(objDonorType.iPriestId);
+                    $('#sPriestName').val(objDonorType.sPriestName);
+                    $('#lbltitle').html('Edit Manage Priests');
+
+                    $('#sPriestName').focus().removeClass("validate");
+
+                    $('#AddDonor-Category').modal('show');
+                }
+                else {
+                    alert(result.data);
+                }
+            }
+        });
+    }
+
+
+
+    function Delete(iPriestId) {
+        var val2 = confirm("Do you want to delete this record?");
+        if (val2) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeletePriest", "Priest")',  // the URL of the controller action method
+                data: { iPriestId: iPriestId }, // optional data
+                success: function (result) {
+                    $("#divmessage").html(result.data);
+                    $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+                    PriestBind($('#hdnPageNo').val());
+                },
+                error: function (req, status, error) {
+                    $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+                    $("#divmessage").html(result.data);
+                }
+            });
+        }
+    }
+
+    function Validate() {
+
+        //Account Information
+        if ($.trim($('#sPriestName').val()) == '') { $('#sPriestName').focus().addClass("validate"); return false; } else { $('#sPriestName').focus().removeClass("validate"); }
+
+        return true;
+    }
+    function ResetValidateClass() {
+        $('#sPriestName').removeClass("validate");
+    }
+    function ClearSearch() {
+        $('#keyword').val('');
+        PriestBind(1);
+    }
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="iPriestId" />
+<input id="hdnsortorder" type="hidden" value="DESC" />
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1>Manage Priests</h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("Index", "Priest")"><i class="fa fa-money"></i>Manage Priests</a></li>
+        <li class="active"><i class="fa fa-money"></i>Manage Priests</li>
+    </ol>
+</div>
+
+
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+    <div class="box">
+        <div class="clearfix box-body">
+            <div class="clearfix row">
+                <div class="col-xs-12 col-lg-4 col-sm-6">
+                    <label>Search</label>
+                    <input type="text" placeholder="Key Word" name="keyword" id="keyword" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-lg-8 col-sm-6">
+                    <div>
+                        <label>&nbsp;</label>
+                    </div>
+                    <button class="btn btn-primary" type="submit" onclick="PriestBind(1);">Search</button>
+                    <button class="btn btn-info" type="submit" onclick="ClearSearch();">Clear</button>
+                    <a data-toggle="modal" onclick="Add();" class="btn btn-danger pull-right">Add </a>
+                </div>
+            </div>
+        </div>
+        <div id="divDonorType" class="box-body table-responsive">
+            @{Html.RenderAction("PriestList", "Priest");}
+        </div>
+
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="AddDonor-Category" tabindex="-1" role="dialog" aria-hidden="true">
+    @using (Html.BeginForm("InsertPriest", "Priest", FormMethod.Post, new { style = "margin-bottom:0" }))
+    {
+        <input type="hidden" id="iPriestId" name="iPriestId" value="0" />
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><span id="lbltitle"></span></h4>
+                </div>
+                <div class="modal-body validation">
+                    <div class="row">
+                        <div class="col-xs-12 col-lg-12">
+                            <label>Priest Name </label>
+                            <input type="text" id="sPriestName" name="sPriestName" onkeypress="ResetValidateClass();" onclick="ResetValidateClass();" placeholder="Manage Priests *" value="" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer clearfix">
+                    <input type="submit" onclick="return Validate();" value="Submit" class="btn btn-danger">
+                    <a class="btn btn-primary pull-left" data-dismiss="modal">Cancel</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

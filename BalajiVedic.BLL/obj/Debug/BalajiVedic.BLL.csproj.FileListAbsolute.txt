@@ -11,3 +11,16 @@ D:\Development\Projects\BalajiVedic\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.cs
 D:\Development\Projects\BalajiVedic\BalajiVedic.BLL\bin\Debug\SendGrid.dll
 D:\Development\Projects\BalajiVedic\BalajiVedic.BLL\bin\Debug\Newtonsoft.Json.dll
 D:\Development\Projects\BalajiVedic\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.csproj.CopyComplete
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\BalajiVedic.BLL.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\BalajiVedic.BLL.pdb
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\BalajiVedic.DAL.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\RestSharp.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\SendGrid.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\Newtonsoft.Json.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\BalajiVedic.DAL.pdb
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\bin\Debug\RestSharp.xml
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.csproj.AssemblyReference.cache
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.csproj.CoreCompileInputs.cache
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.csproj.CopyComplete
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.dll
+D:\Development\Projects\BalajiVedic-GitHub\BalajiVedic.BLL\obj\Debug\BalajiVedic.BLL.pdb

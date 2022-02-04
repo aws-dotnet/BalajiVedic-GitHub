@@ -1,0 +1,141 @@
+﻿@{
+    ViewBag.Title = "AddDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+
+}
+
+
+
+<script>
+    $(document).ready(function () {
+        $('#WebPages').addClass('active');
+        $('#wDonors').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+    });
+
+    function Validate() {
+
+        if ($.trim($('#sDonationTypeDesc').val()) == '') { document.getElementsByName('sDonationTypeDesc')[0].placeholder = 'Required'; $('#sDonationTypeDesc').focus().addClass("validate"); return false; } else { $('#sDonationTypeDesc').focus().removeClass("validate"); }
+        if ($.trim($('#fPrice').val()) == '') { document.getElementsByName('fPrice')[0].placeholder = 'Required'; $('#fPrice').focus().addClass("validate"); return false; } else { $('#fPrice').focus().removeClass("validate"); }
+        if ($.trim($('#sPriestCommissionBased').val()) == '') { document.getElementsByName('sPriestCommissionBased')[0].placeholder = 'Required'; $('#sPriestCommissionBased').focus().addClass("validate"); return false; } else { $('#sPriestCommissionBased').focus().removeClass("validate"); }
+        if ($.trim($('#fPriestCommision').val()) == '') { document.getElementsByName('fPriestCommision')[0].placeholder = 'Required'; $('#fPriestCommision').focus().addClass("validate"); return false; } else { $('#fPriestCommision').focus().removeClass("validate"); }
+        if ($.trim($('#sPoojaFrequency').val()) == '') { document.getElementsByName('sPoojaFrequency')[0].placeholder = 'Required'; $('#sPoojaFrequency').focus().addClass("validate"); return false; } else { $('#sPoojaFrequency').focus().removeClass("validate"); }
+
+        return true;
+    }
+    function ResetValidateClass() {
+        $('#Heading').removeClass("validate");
+        $('#DonationCategoryId').removeClass("validate");
+    }
+
+</script>
+
+<!-- breadcumb -->
+<div class="content-header">
+    <h1>Add Manage Pooja/Donations </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i>Home</a></li>
+        <li><a href="@Url.Action("Index", "DonationType")"><i class="fa fa-list-alt"></i>Donation Type</a></li>
+        <li class="active">Add Web Page</li>
+    </ol>
+</div>
+<!--end breadcumb -->
+<div class="content">
+    <!-- Main content -->
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+    <div class="clearfix sepH_b"></div>
+    @using (Html.BeginForm("InsertDonationType", "DonationType", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div class="box validation">
+            
+            <div class="box-body">
+                <div class="row">
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Type : </label>
+                        <select id="sDonationType" class="form-control" name="sDonationType" onclick="ResetValidateClass();">
+                            <option value="">- Select -</option>
+                            <option value="Pooja">Pooja</option>
+                            <option value="Donation">Donation</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Pooja/Donation : <span class="red-t">*</span></label>
+                        <input type="text" id="sDonationTypeDesc" onkeypress="ResetValidateClass();" onclick="ResetValidateClass();" name="sDonationTypeDesc" class="form-control">
+                    </div>
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Price : </label>
+                        <input type="text" onkeypress="return Common.isNumberKey(event)" id="fPrice" onclick="ResetValidateClass();" name="fPrice" class="form-control">
+                    </div>
+
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Priest Commission Type : <span class="red-t">*</span></label>
+                        <select id="sPriestCommissionBased" class="form-control" name="sPriestCommissionBased" onclick="ResetValidateClass();">
+                            <option value="">- Select  -</option>
+                            <option value="F">Fixed</option>
+                            <option value="P">Percentage</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Priest Commission : <span class="red-t">*</span></label>
+                        <input type="text" onkeypress="return Common.isNumberKey(event)" id="fPriestCommision" onclick="ResetValidateClass();" name="fPriestCommision" class="form-control">
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Pooja Category : <span class="red-t">*</span></label>
+                        <select id="sPoojaFrequency" class="form-control" name="sPoojaFrequency" onclick="ResetValidateClass();">
+                            <option value="">- Select-</option>
+                            <option  value="Poojas At Temple">Poojas At Temple</option>
+                            <option value="Priest Services at Temple">Priest Services at Temple</option>
+                            <option value="Priest Services at Home">Priest Services at Home</option>
+                            <option value="Special Services">Special Services</option>
+                            <option value="Others">Others</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Notes : </label>
+                        <textarea id="sNotes" name="sNotes" class="form-control"></textarea>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3 col-sm-6">
+                        <label>Tax Deductible : </label>
+                        <select id="bTaxDeductible" class="form-control" name="bTaxDeductible" onclick="ResetValidateClass();">
+                            <option value="">- Select-</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+
+
+                        </select>
+                    </div>
+
+                </div>
+               
+            </div>
+        </div>
+        <div class="box">
+            <!-- /.box-header -->
+            <div class="box-body text-right">
+                <input type="submit" value="Submit" class="btn btn-primary" onclick="return Validate();" />
+                <a class="btn btn-info" href="@Url.Action("Index", "DonationType")">Cancel</a>
+            </div>
+            <!-- /.box-body -->
+        </div>
+    }
+</div>
+
+
+

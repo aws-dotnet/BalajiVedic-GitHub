@@ -18,14 +18,14 @@ namespace BalajiVedic.Areas.Admin.Controllers
         }
 
        
-        public ActionResult UserList(string Search = "",string SortColumn = "", string SortOrder = "", int PageNo = 1, int Items = 20)
+        public ActionResult UserList(string sUserID="", string Name="", Int64 iRoleID=0, string Search = "",string SortColumn = "", string SortOrder = "", int PageNo = 1, int Items = 20)
         {
             string Sort = (SortColumn != "" ? SortColumn + " " + SortOrder : "");
             int Total = 0;
             List<Entities.Users> lstuser = new List<Entities.Users>();
             try
             {
-                lstuser = _user.GetUsersListByVariable(Search, Sort, PageNo, Items, ref Total);
+                lstuser = _user.GetUsersListByVariable(sUserID, Name, iRoleID,Search, Sort, PageNo, Items, ref Total);
 
             }
             catch
@@ -42,7 +42,14 @@ namespace BalajiVedic.Areas.Admin.Controllers
             return View();
         }
 
-      
+
+        public ActionResult AddUser()
+        {
+
+            return View();
+        }
+
+
         [HttpPost]
         public ActionResult CreateUser(Entities.Users objUsers)
         {
@@ -53,9 +60,9 @@ namespace BalajiVedic.Areas.Admin.Controllers
                 objUsers.dCreateDate = DateTime.UtcNow;
                 objUsers.sLastUpdateUser = HttpContext.User.Identity.Name.ToString();
                 objUsers.dLastUpdateDate = DateTime.UtcNow;
-                objUsers.bActive = true;
-                objUsers.bForcePasswordChange = false;
-                objUsers.bLockOut = false;
+               // objUsers.bActive = true;
+              //  objUsers.bForcePasswordChange = false;
+              //  objUsers.bLockOut = false;
                 string newpass = BLL.Password.GetUniqueKey(8);
                 objUsers.sPassword = BalajiVedic.BLL.Password.EncryptPassword(newpass);
 
@@ -67,6 +74,13 @@ namespace BalajiVedic.Areas.Admin.Controllers
                     TempData["message"] = "<div class=\"alert alert-success alert-dismissable\">Created user account with sFirstName " + objUsers.sFirstName + ".</div>";
                     return RedirectToAction("Index", "Users");
                 }
+
+                if (_status == 2)
+                {
+                    TempData["message"] = "<div class=\"success closable\">Successfully Updated Record.</div>";
+                    return RedirectToAction("Index", "Users");
+                }
+
                 else
                 {
                     TempData["message"] = "<div class=\"alert alert-danger alert-dismissable\">Failed uploading image.</div>";
@@ -81,36 +95,36 @@ namespace BalajiVedic.Areas.Admin.Controllers
         }
 
        
-        [HttpPost]
+      
+
         public ActionResult EditUser(Int64 iUserID)
         {
-            string str = "";
+            Entities.Donors objDonors = new Entities.Donors();
+
+            int status = 0;
+
             try
             {
                 int _qstatus = 0;
                 Entities.Users _objuser = _user.GetUsersListById(iUserID, ref _qstatus);
+                ViewBag.objUsers = _objuser;
 
-                if (_qstatus == 1)
-                {
-                    return Json(new { ok = true, data = _objuser });
-                }
-                else
-                {
-                    str = "<div class=\"alert alert-success alert-dismissable\">Failed Transaction</div>";
-                    return Json(new { ok = false, data = str });
-                }
+
             }
             catch
             {
-                str = "<div class=\"alert alert-danger alert-dismissable\">Failed transaction.</div>";
-                return Json(new { ok = false, data = str });
+                TempData["message"] = "<div class=\"alert alert-danger alert-dismissable\">Sorry, failed processing your request.</div>";
+                return RedirectToAction("Index", "Users");
             }
+          
+            return View();
         }
 
-       
-      
 
-      
+
+
+
+
         [HttpPost]
         public JsonResult UpdateUsersStatus(Int64 iUserID)
         {

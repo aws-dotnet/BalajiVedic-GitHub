@@ -1,0 +1,158 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+    
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#WebPages').addClass('active');
+        $('#wDonationType').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+            DonationTypeBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+        DonationTypeBind(1);
+    }
+
+
+
+
+    function DonationTypeBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+        var Search = $('#keyword').val().trim();
+        var ddlType = $('#ddlType').val().trim();
+
+        $.ajax({
+            url: '@Url.Action("DonationTypeList", "DonationType")',
+            type: 'GET',
+            cache: false,
+            data: { ddlType: ddlType, Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items },
+            success: function (result) {
+                $('#divDonorType').html(result);
+                PagerClickBind();
+            }
+        });
+    }
+
+
+   
+
+
+    function Delete(iDonationTypeID) {
+        var val2 = confirm("Do you want to delete this record?");
+        if (val2) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteDonationType", "DonationType")',  // the URL of the controller action method
+                data: { iDonationTypeID: iDonationTypeID }, // optional data
+                success: function (result) {
+
+                    
+                    $("#divmessage").html(result.data);
+                    $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+                    DonationTypeBind($('#hdnPageNo').val());
+                },
+                error: function (req, status, error) {
+                    $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+                    $("#divmessage").html(result.data);
+                }
+            });
+        }
+    }
+
+
+    function ClearSearch() {
+
+        $('#ddlType').val('');
+        $('#keyword').val('');
+        DonationTypeBind(1);
+    }
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="dCreateUser" />
+<input id="hdnsortorder" type="hidden" value="DESC" />
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1>Manage Pooja/Donations</h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("Index", "DonationType")"><i class="fa fa-money"></i> Manage Pooja/Donations</a></li>
+        <li class="active"><i class="fa fa-money"></i>  Manage Pooja/Donations</li>
+    </ol>
+</div>
+
+
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+
+    
+
+    <div class="box">
+        <div class="clearfix box-body">
+            <div class="clearfix row">
+                <div class="col-xs-12 col-lg-3 col-sm-6">
+                    <label>Search</label>
+                    <input type="text" placeholder="Key Word" name="keyword" id="keyword" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-lg-3 col-sm-6">
+                    <label>Search</label>
+                    <select id="ddlType" class="form-control" name="ddlType">
+                        <option value="">- Select Category -</option>
+                        <option value="Poojas At Temple">Poojas At Temple</option>
+                        <option value="Priest Services at Temple">Priest Services at Temple</option>
+                        <option value="Priest Services at Home">Priest Services at Home</option>
+                        <option value="Special Services">Special Services</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+
+                <div class="col-xs-12 col-lg-6 col-sm-6">
+                    <div>
+                        <label>&nbsp;</label>
+                    </div>
+                    <button class="btn btn-primary" type="submit" onclick="DonationTypeBind(1);">Search</button>
+                    <button class="btn btn-info" type="submit" onclick="ClearSearch();">Clear</button>
+                    <a data-toggle="modal" href="@Url.Action("AddDonationType", "DonationType")" class="btn btn-danger pull-right">Add</a>
+
+                </div>
+            </div>
+        </div>
+        <div id="divDonorType" class="box-body table-responsive">
+            @{Html.RenderAction("DonationTypeList", "DonationType");}
+        </div>
+
+
+    </div>
+</div>
+
+

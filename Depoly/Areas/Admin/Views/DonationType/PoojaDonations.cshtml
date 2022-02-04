@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_MainLayout.cshtml";
+
+    var sFrequency = ViewBag.sFrequency;
+    var sLastName = ViewBag.sLastName;
+    var sFirstName = ViewBag.sFirstName;
+    var iDonorId = ViewBag.iDonorId;
+    var sPhoneNumber = ViewBag.sPhoneNumber;
+   
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#WebPages').addClass('active');
+        $('#wDonationType').addClass('active');
+        $('.alert-danger').append('<i class="fa fa-ban"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        $('.alert-success').append('<i class="fa fa-check"></i><button class="close" aria-hidden="true" data-dismiss="alert" type="button">×</button>');
+        PagerClickBind();
+
+    });
+
+    function PagerClickBind() {
+        $(".pagination a").bind("click", function () {
+            PoojaDonationsBind($(this).text());
+        });
+    }
+
+    function sortresult(sortcolumn) {
+        $('#hdnsortorder').val(($('#hdnsortorder').val() == 'ASC' ? 'DESC' : 'ASC'));
+        $('#hdnsortcolumn').val(sortcolumn);
+        PoojaDonationsBind(1);
+    }
+
+
+
+
+    function PoojaDonationsBind(Pageno) {
+        var pageno = Common.Pageno(Pageno);
+        var sortcolumn = $('#hdnsortcolumn').val();
+        var sortorder = $('#hdnsortorder').val();
+        var items = $('#txtitems').val();
+        var Search = '';
+        var sFrequency = '@sFrequency';
+
+        $.ajax({
+            url: '@Url.Action("PoojaDonationsList", "DonationType")',
+            type: 'GET',
+            cache: false,
+            data: { sFrequency: sFrequency, Search: Search, PageNo: pageno, SortColumn: sortcolumn, SortOrder: sortorder, Items: items },
+            success: function (result) {
+                $('#divPoojaDonations').html(result);
+                PagerClickBind();
+            }
+        });
+    }
+
+
+
+    function ClearSearch() {
+
+   
+        PoojaDonationsBind(1);
+    }
+</script>
+
+<input id="hdnPageNo" type="hidden" value="1" />
+<input id="hdnsortcolumn" type="hidden" value="" />
+<input id="hdnsortorder" type="hidden" value="" />
+
+<!-- breadcumb -->
+
+
+<div class="content-header">
+    <h1> Pooja/Donations  <span class="" style="padding-left:270px;">Donor :<span class="red-t">@sLastName @sFirstName</span></span></h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li><a href="@Url.Action("PoojaDonations", "DonationType")"><i class="fa fa-money"></i>  Pooja/Donations</a></li>
+        <li class="active"><i class="fa fa-money"></i>   Pooja/Donations</li>s
+    </ol>
+</div>
+
+
+<!--end breadcumb -->
+
+<div class="content">
+    <!-- Main content -->
+
+    <div id="divmessage">
+        @if (TempData["message"] != null)
+        {@Html.Raw(TempData["message"].ToString())}
+
+        @if (ViewBag.message != null)
+        {@Html.Raw(ViewBag.message.ToString())}
+    </div>
+
+
+    <div class="box">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li><a href="@Url.Action("HomePageDonors", "Donors" , new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Donor Section</a></li>
+                <li class="active"><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Pooja /Donations</a></li>
+                <li><a class="btn" href="@Url.Action("Index", "PaymentMethods", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Payment Methods</a></li>
+                <li><a class="btn" href="@Url.Action("Index", "MembershipTypes", new { sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Finish</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="box">
+
+        <div class="box">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="@(sFrequency == "Poojas At Temple" ? "active" : "")"><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sFrequency = "Poojas At Temple",sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Poojas At Temple</a></li>
+                    <li class="@(sFrequency == "Priest Services at Temple" ? "active" : "")"><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sFrequency = "Priest Services at Temple", sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Priest Services at Temple</a></li>
+                    <li class="@(sFrequency == "Priest Services at Home" ? "active" : "")"><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sFrequency = "Priest Services at Home",sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Priest Services at Home</a></li>
+                    <li class="@(sFrequency == "Special Services" ? "active" : "")"><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sFrequency = "Special Services",sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Special Services</a></li>
+                    <li class="@(sFrequency == "Others" ? "active" : "")"><a class="btn" href="@Url.Action("PoojaDonations", "DonationType", new { sFrequency = "Others",sLastName = sLastName, sFirstName = sFirstName, iDonorId = iDonorId, sPhoneNumber = sPhoneNumber })">Others</a></li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div id="divPoojaDonations" class="box-body table-responsive">
+            @{Html.RenderAction("PoojaDonationsList", "DonationType");}
+        </div>
+
+
+    </div>
+</div>
+
+
+
